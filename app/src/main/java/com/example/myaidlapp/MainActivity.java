@@ -15,13 +15,17 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private IMyAidlInterface myService = null;
+    private Button bindButton = null;
+    private Button msgButton = null;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bindButton = findViewById(R.id.button);
+        msgButton = findViewById(R.id.button2);;
 
-        Button bindButton = findViewById(R.id.button);
+        msgButton.setEnabled(false);
         bindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 bindService(intent,mConnection, Context.BIND_AUTO_CREATE);
             }
         });
-        Button msgButton = findViewById(R.id.button2);
+
         msgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             myService = IMyAidlInterface.Stub.asInterface(service);
+            msgButton.setEnabled(true);
             Toast.makeText(MainActivity.this,"Connect success!",Toast.LENGTH_SHORT).show();
         }
 
